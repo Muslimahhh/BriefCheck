@@ -274,9 +274,9 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-paper">
-      <header className="border-b border-line bg-white px-6 py-4 lg:px-8">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div>
+      <header className="border-b border-line bg-white px-4 py-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+          <div className="min-w-0">
             <p className="text-sm font-semibold uppercase tracking-[0.12em] text-moss">
               BriefCheck
             </p>
@@ -293,11 +293,11 @@ export default function Home() {
                 : "All blocking findings resolved."}
             </p>
           </div>
-          <div className="flex gap-3">
+          <div className="flex w-full flex-wrap gap-3 sm:w-auto">
             <button
               type="button"
               onClick={resetAnalysis}
-              className="rounded-md border border-line bg-white px-4 py-2 text-sm font-semibold text-ink hover:bg-[#eef1ea]"
+              className="min-h-10 flex-1 rounded-md border border-line bg-white px-4 py-2 text-sm font-semibold text-ink hover:bg-[#eef1ea] sm:flex-none"
             >
               Edit source
             </button>
@@ -305,7 +305,7 @@ export default function Home() {
               type="button"
               onClick={() => setShowVerified(true)}
               disabled={unresolvedIssueCount > 0}
-              className="rounded-md bg-ink px-4 py-2 text-sm font-semibold text-white hover:bg-[#111820] disabled:cursor-not-allowed disabled:opacity-65"
+              className="min-h-10 flex-1 rounded-md bg-ink px-4 py-2 text-sm font-semibold text-white hover:bg-[#111820] disabled:cursor-not-allowed disabled:opacity-65 sm:flex-none"
             >
               Generate verified brief
             </button>
@@ -319,12 +319,12 @@ export default function Home() {
         ) : null}
       </header>
 
-      <div className="grid min-h-[calc(100vh-89px)] lg:grid-cols-[0.94fr_1.06fr]">
-        <section className="border-b border-line bg-white p-5 lg:border-b-0 lg:border-r lg:p-6">
+      <div className="grid min-h-[calc(100vh-89px)] grid-cols-1 lg:grid-cols-[0.94fr_1.06fr]">
+        <section className="min-w-0 border-b border-line bg-white p-4 sm:p-5 lg:border-b-0 lg:border-r lg:p-6">
           <h2 className="text-sm font-semibold uppercase tracking-[0.12em] text-[#66737c]">
             Original source
           </h2>
-          <div className="mt-4 space-y-3 rounded-lg border border-line bg-[#fbfcfa] p-4 text-sm leading-6">
+          <div className="mt-4 w-full min-w-0 space-y-3 rounded-lg border border-line bg-[#fbfcfa] p-3 text-sm leading-6 sm:p-4">
             <Transcript
               activeEvidenceIds={activeEvidenceIds}
               evidenceItems={evidenceItems}
@@ -333,7 +333,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="p-5 lg:p-6">
+        <section className="min-w-0 p-4 sm:p-5 lg:p-6">
           {!showVerified ? (
             <div className="space-y-6">
               {groups.map((group) => {
@@ -351,7 +351,7 @@ export default function Home() {
                         {groupFindings.length}
                       </span>
                     </div>
-                    <div className="space-y-3">
+                    <div className="w-full space-y-3">
                       {groupFindings.map((finding) => (
                         <FindingCard
                           key={finding.id}
@@ -438,15 +438,15 @@ function FindingCard({
     <article
       className={`rounded-lg border bg-white p-4 shadow-panel transition ${
         selected ? "border-ink bg-[#fbfcfa] ring-1 ring-ink/10" : "border-line"
-      } ${isRemoved ? "opacity-55" : ""}`}
+      } ${isRemoved ? "opacity-55" : ""} w-full min-w-0`}
     >
       <button type="button" onClick={onSelect} className="block w-full text-left">
         <div className="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <h3 className="text-base font-semibold text-ink">
+          <div className="min-w-0">
+            <h3 className="break-words text-base font-semibold text-ink">
               {finding.currentCriterion}
             </h3>
-            <p className="mt-2 text-sm leading-6 text-[#4f5d67]">
+            <p className="mt-2 break-words text-sm leading-6 text-[#4f5d67]">
               {finding.explanation}
             </p>
           </div>
@@ -486,7 +486,7 @@ function FindingCard({
               <p
                 key={item.id}
                 data-testid="evidence-quote"
-                className="rounded-md border border-line bg-[#fbfcfa] p-3 text-sm leading-6 text-ink"
+                className="break-words rounded-md border border-line bg-[#fbfcfa] p-3 text-sm leading-6 text-ink"
               >
                 <span className="font-semibold">Evidence: </span>
                 &quot;{item.text}&quot;
@@ -494,18 +494,18 @@ function FindingCard({
             ))}
           </div>
           {finding.suggestedQuestion ? (
-            <p className="text-sm leading-6 text-ink">
+            <p className="break-words text-sm leading-6 text-ink">
               <span className="font-semibold">Suggested clarification: </span>
               {finding.suggestedQuestion}
             </p>
           ) : null}
           {finding.suggestedRewrite ? (
-            <p className="mt-2 text-sm leading-6 text-ink">
+            <p className="mt-2 break-words text-sm leading-6 text-ink">
               <span className="font-semibold">Suggested rewrite: </span>
               {finding.suggestedRewrite}
             </p>
           ) : null}
-          <div className="mt-4 flex flex-wrap gap-2">
+          <div className="mt-4 flex w-full flex-wrap gap-2">
             {finding.autoRetained && finding.classification === "Supported" ? (
               <>
                 <ActionButton onClick={onMustHave}>
@@ -576,13 +576,13 @@ function Transcript({
   sourceText: string;
 }) {
   return (
-    <div data-testid="source-transcript">
+    <div data-testid="source-transcript" className="min-w-0">
       {sourceText.split(/\n{2,}/).map((paragraph, index) => (
         <article
           key={`${paragraph}-${index}`}
-          className="rounded-md border border-transparent p-3"
+          className="min-w-0 rounded-md border border-transparent p-2 sm:p-3"
         >
-          <p className="whitespace-pre-wrap text-ink">
+          <p className="whitespace-pre-wrap break-words text-ink">
             {renderHighlightedEvidence(
               paragraph,
               activeEvidenceIds,
@@ -630,7 +630,7 @@ function renderHighlightedEvidence(
     parts.push(
       <mark
         key={`${match.start}-${index}`}
-        className="rounded border border-maize bg-[#fff7dc] px-1 text-ink"
+        className="box-decoration-clone rounded border border-maize bg-[#fff7dc] px-1 text-ink"
       >
         {paragraph.slice(match.start, match.end)}
       </mark>
@@ -653,7 +653,7 @@ function ActionButton({
     <button
       type="button"
       onClick={onClick}
-      className="rounded-md border border-line bg-[#fbfcfa] px-3 py-2 text-xs font-semibold text-ink hover:bg-[#eef1ea]"
+      className="min-h-10 flex-1 whitespace-normal rounded-md border border-line bg-[#fbfcfa] px-3 py-2 text-xs font-semibold text-ink hover:bg-[#eef1ea] sm:flex-none"
     >
       {children}
     </button>
@@ -685,10 +685,10 @@ function VerifiedBrief({
   const recordSections = buildInterpretationRecord(findings, evidenceItems);
 
   return (
-    <div className="space-y-5">
+    <div className="min-w-0 space-y-5">
       <section
         data-testid="verified-brief"
-        className="rounded-lg border border-line bg-white p-5 shadow-panel"
+        className="min-w-0 rounded-lg border border-line bg-white p-4 shadow-panel sm:p-5"
       >
         <h2 className="text-xl font-semibold text-ink">Verified brief</h2>
         <BriefSection
@@ -715,7 +715,7 @@ function VerifiedBrief({
 
       <section
         data-testid="interpretation-record"
-        className="rounded-lg border border-line bg-white p-5 shadow-panel"
+        className="min-w-0 rounded-lg border border-line bg-white p-4 shadow-panel sm:p-5"
       >
         <h2 className="text-xl font-semibold text-ink">
           Interpretation record
@@ -844,7 +844,7 @@ function BriefSection({
       {items.length ? (
         <ul className="mt-2 space-y-2 text-sm leading-6 text-ink">
           {items.map((item) => (
-            <li key={item} className="border-l-2 border-line pl-3">
+            <li key={item} className="break-words border-l-2 border-line pl-3">
               {item}
             </li>
           ))}
